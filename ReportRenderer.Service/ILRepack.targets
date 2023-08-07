@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Target Name="ILRepacker" AfterTargets="Build">
+    <ItemGroup>
+      <InputAssemblies Include="$(OutputPath)$(TargetName)$(TargetExt)" />
+      <InputAssemblies Include="$(OutputPath)Microsoft.SqlServer.Types.dll" />
+      <InputAssemblies Include="$(OutputPath)Microsoft.ReportViewer.Common.dll" />
+      <InputAssemblies Include="$(OutputPath)Microsoft.ReportViewer.WebForms.dll" />
+      <InputAssemblies Include="$(OutputPath)Microsoft.ReportViewer.ProcessingObjectModel.dll" />
+      <InputAssemblies Include="$(OutputPath)Microsoft.ReportViewer.DataVisualization.dll" />
+    </ItemGroup>
+    <ILRepack
+        Parallel="true"
+        Internalize="false"
+        InternalizeExclude="@(DoNotInternalizeAssemblies)"
+        InputAssemblies="@(InputAssemblies)"
+        LibraryPath="$(OutputPath)"
+        Wildcards="false"
+        TargetKind="SameAsPrimaryAssembly"
+        DebugInfo="false"
+        KeyFile="signature.snk"
+        OutputFile="$(OutputPath)Merged\$(AssemblyName).dll"
+        LogFile="$(OutputPath)Merged\ILRepack.log"
+    />
+  </Target>
+</Project>
